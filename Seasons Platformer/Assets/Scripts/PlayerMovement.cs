@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (theCharController.isGrounded)
         {
+            moveDirection.y = 0;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 moveDirection.y = jumpForce;
