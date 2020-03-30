@@ -7,55 +7,36 @@ public class PlayerMovement : MonoBehaviour
 
     public float movementSpeed;
 
-    public Vector3 jump;
     public float jumpForce = 2.0f;
 
-    bool onGround = true;
+    CharacterController theCharController;
 
-    public float landedCounterLength = 0.5f;
-    public float landedCounter;
-
-    Rigidbody rb;
+    private Vector3 moveDirection;
+    public float gravityScale;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        jump = new Vector3(0.0f, 2.0f, 0.0f);
-        float landedCounter = landedCounterLength;
+        theCharController = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (onGround == true)
-        {
-            this.transform.Translate(Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime, 0, 0);
-        }
+        moveDirection = new Vector3(Input.GetAxis("Horizontal") * movementSpeed, moveDirection.y, Input.GetAxis("Vertical"));
 
-        if (Input.GetKeyDown(KeyCode.Space) && onGround == true && landedCounter <= 0)
+        if (theCharController.isGrounded)
         {
-            onGround = false;
-            rb.AddForce(jump * jumpForce, ForceMode.Impulse);
-            Debug.Log("Jumped");
-            landedCounter = landedCounterLength;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                moveDirection.y = jumpForce;
+            }
         }
+       
 
-        if (landedCounter > 0)
-        {
-            landedCounter -= Time.deltaTime;
-        }
+        moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
+        theCharController.Move(moveDirection * Time.deltaTime);
 
-    }
-
-    void OnCollisionStay()
-    {
-        if (landedCounter <= 0f)
-        {
-            onGround = true;
-            Debug.Log("Landed");
-            landedCounter = landedCounterLength;
-        }
     }
 
 
