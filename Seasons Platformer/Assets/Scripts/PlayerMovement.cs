@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
        
+        //TODO - When 'bang head' on platform, change y movement to fall to ground.
 
         moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
         theCharController.Move(moveDirection * Time.deltaTime);
