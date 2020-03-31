@@ -56,6 +56,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    public void AddJumpModifier(int modifierToAdd)
+    {
+        jumpForce += modifierToAdd;
+    }
+
 
 
 }
